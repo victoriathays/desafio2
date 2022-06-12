@@ -23,24 +23,19 @@ function logadoOuNAO (){
 console.log(usuarioId);
 
 //Salvar no localstorage
-const atualizarLocalStorage = (produtos) => {localStorage.setItem('produtos', JSON.stringify(produtos))};
+const atualizarLocalStorage =(produtos) => {localStorage.setItem('produtos', JSON.stringify(produtos))}
 
 //Recuperar os produtos
 const recuperarLocalStorage = () => JSON.parse(localStorage.getItem('produtos')|| '[]');
 
-
 const salvarProduto = (e) =>{
     e.preventDefault()
-
-
     //pegar os dados do formulario
     const nome = form.nome.value;
     const preco = Number(form.preco.value);
     const prime = form.prime.checked;
-   
 
-    if(idx === 'novo'){
-
+    if(idx === "novo"){
         const produtos = recuperarLocalStorage();
         /* produtos.push({id:produtos.length + 1, nome, preco, prime}); */
         let idp = 0;
@@ -49,7 +44,7 @@ const salvarProduto = (e) =>{
                 idp = Number(pro.id);
             }
         }
-        produtos.push({ id: idp+=1, nome, preco, prime, usuarioId});
+         produtos.push({ id: idp+=1, nome, preco, prime, usuarioId});
         atualizarLocalStorage(produtos);
         preencherTabela();
         form.reset();
@@ -58,19 +53,20 @@ const salvarProduto = (e) =>{
         atualizarProduto(idx, produto);
         preencherTabela();
         form.reset();
-        idx = 'novo';
+        idx = "novo";
     }
 
 
 
-}
+};
+
 
 const preencherTabela = () =>{
     const produtos = recuperarLocalStorage();
     tabela.innerHTML = "";
     for(const produto of produtos){
         if(produto.usuarioId === usuarioId){
-        tabela.innerHTML += `
+        tabela.innerHTML +=`
         
         <tr>
             <th scope="row">${produto.id}</th>
@@ -89,8 +85,9 @@ const preencherTabela = () =>{
         </tr>
         `;
     }
+}
 
-    }
+
 };
 
 const removerProduto =(id) =>{
@@ -106,7 +103,7 @@ const removerProduto =(id) =>{
 
 const editarProduto = (id) =>{
     const produtos = recuperarLocalStorage();
-    const indexProduto = produtos.findIndex(produto => produto.id === id);
+    const indexProduto = produtos.findIndex((p) => p.id === id && p.usuarioId == usuarioId);
     form.nome.value = produtos[indexProduto].nome;
     form.preco.value = produtos[indexProduto].preco;
     form.prime.checked = produtos[indexProduto].prime;
@@ -115,7 +112,7 @@ const editarProduto = (id) =>{
 
 const atualizarProduto = (id, produto) =>{
     const produtos = recuperarLocalStorage();
-    const indexProduto = produtos.findIndex(produto => produto.id === id);
+    const indexProduto = produtos.findIndex((p) => p.id === id && p.usuarioId == usuarioId);
     produtos[indexProduto] = produto;
     atualizarLocalStorage(produtos);
 }
